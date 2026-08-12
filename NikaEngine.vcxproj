@@ -25,7 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPP\include\math\vec2.h" />
-    <ClInclude Include="CPP\include\NikaEngine.h" />
+    <ClInclude Include="CPP\include\nika_engine.h" />
     <ClInclude Include="CPP\include\window\nika_window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

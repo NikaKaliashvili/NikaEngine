@@ -29,7 +29,7 @@
     <ClInclude Include="CPP\include\window\nika_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CPP\include\NikaEngine.h">
+    <ClInclude Include="CPP\include\nika_engine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CPP\include\math\vec2.h">

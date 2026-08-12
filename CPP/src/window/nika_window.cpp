@@ -1,5 +1,7 @@
-#include "../../include/NikaEngine.h"
+#include "../../include/nika_engine.h"
 
+static callBack onStart;
+static callBack onUpdate;
 
 // main window procedure
 static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -9,6 +11,18 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_DESTROY:
 		// properly exit
 		PostQuitMessage(0);
+		break;
+
+	case WM_CREATE:
+		// call onStart function if is called
+		if (onStart)
+			onStart();
+		break;
+
+	case WM_PAINT:
+		// call onUpdate function if is called
+		if (onUpdate)
+			onUpdate();
 		break;
 	}
 
@@ -39,8 +53,19 @@ NikaWindow NikaEngine::InitWindow(std::string title, UINT32 x, UINT32 y, UINT32 
 // handles window events
 void NikaEngine::PollEvents() {
 	static MSG msg;
-	while (GetMessageA(&msg,0,0,0)) {
+	while (GetMessageA(&msg, 0, 0, 0)) {
 		TranslateMessage(&msg);
 		DispatchMessageA(&msg);
 	}
+}
+
+// sets which void should run when window is created
+void NikaEngine::OnStart(callBack startCallBack)
+{
+	onStart = startCallBack;
+}
+
+// sets which void should run for painting
+void NikaEngine::OnUpdate(callBack updateCallBack) {
+	onUpdate = updateCallBack;
 }

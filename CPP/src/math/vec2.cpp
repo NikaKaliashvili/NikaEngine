@@ -1,4 +1,4 @@
-#include "../../include/NikaEngine.h"
+#include "../../include/nika_engine.h"
 
 Vec2::Vec2()
 {
