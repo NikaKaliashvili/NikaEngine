@@ -24,6 +24,9 @@
     <ClCompile Include="CPP\src\math\vec2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CPP\src\graphics\create_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPP\include\window\nika_window.h">
@@ -33,6 +36,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CPP\include\math\vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPP\include\graphics\create_object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

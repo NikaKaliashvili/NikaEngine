@@ -1,12 +1,38 @@
 #include <iostream>
 #include "include/nika_engine.h"
 
+Vec2 blockPos(250, 50);
+
+// runs when window is created
 void start() {
-	std::cout << "Hello World" << std::endl;
+	std::cout << "Game has started!" << std::endl;
 }
 
+// runs 120 fps
 void update() {
-	std::cout << "Window is running" << std::endl;
+	// set background color to purple
+	NikaEngine::SetBgColor(RGB(100, 100, 255));
+
+	// create white block on the screen
+	NikaEngine::DrawBlock(RGB(255,255,255),blockPos, Vec2(100, 100));
+
+	// block movement
+
+	if (GetAsyncKeyState('W')) {
+		blockPos.y -= 5;
+	}
+
+	if (GetAsyncKeyState('S')) {
+		blockPos.y += 5;
+	}
+
+	if (GetAsyncKeyState('A')) {
+		blockPos.x -= 5;
+	}
+
+	if (GetAsyncKeyState('D')) {
+		blockPos.x += 5;
+	}
 }
 
 int main() {
@@ -18,7 +44,7 @@ int main() {
 	NikaEngine::OnUpdate(update);
 
 	// initialize window
-	NikaWindow Game = NikaEngine::InitWindow("Game test", 100,100,600,600,true,RGB(100,100,255));
+	NikaWindow Game = NikaEngine::InitWindow("Game test", 100,100,600,600,true);
 
 	// testing vectors
 	Vec2 a(5, 5);

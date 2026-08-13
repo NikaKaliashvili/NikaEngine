@@ -4,7 +4,7 @@
 
 namespace NikaEngine {
 	// initializes main window
-	NikaWindow InitWindow(std::string title, UINT32 x, UINT32 y, UINT32 width, UINT32 height, bool border, COLORREF bgColor);
+	NikaWindow InitWindow(std::string title, UINT32 x, UINT32 y, UINT32 width, UINT32 height, bool border);
 	
 	/*
 	Handles window events.

@@ -1,12 +1,44 @@
 #include "../../include/nika_engine.h"
+#include <iostream>
 
 static callBack onStart;
 static callBack onUpdate;
+
+static HWND _hwnd;
+
+// this is called before actual onUpdate
+static void onUpdateFunc(void*) {
+	while (1) {
+		onUpdate();
+		InvalidateRect(_hwnd, 0, 0);
+		Sleep(8); // sets fps
+	}
+}
+
+// this is called before actual onUpdate
+static void onStartFunc(HWND hwnd) {
+	hdc = GetDC(hwnd);
+	hdcMem = CreateCompatibleDC(hdc);
+	HBITMAP hbMap = CreateCompatibleBitmap(hdc,600,600);
+	_hwnd = hwnd;
+
+	// set bitmap for hdcMem
+	SelectObject(hdcMem, hbMap);
+	onStart();
+
+	// onUpdate thread
+	if (onUpdate)
+		_beginthread(onUpdateFunc, 0, 0);
+}
+
 
 // main window procedure
 static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	
 	switch (msg) {
+
+	case WM_ERASEBKGND:
+		return 1;
 
 	case WM_DESTROY:
 		// properly exit
@@ -16,14 +48,20 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	case WM_CREATE:
 		// call onStart function if is called
 		if (onStart)
-			onStart();
+			onStartFunc(hwnd);
 		break;
 
 	case WM_PAINT:
-		// call onUpdate function if is called
-		if (onUpdate)
-			onUpdate();
-		break;
+
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hwnd,&ps);
+
+		BitBlt(hdc, 0, 0, 600, 600, hdcMem, 0, 0, SRCCOPY);
+
+		EndPaint(hwnd, &ps);
+
+		return 1;
+
 	}
 
 	return DefWindowProcA(hwnd, msg, wParam, lParam);
@@ -31,13 +69,13 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 // initialzies main window
-NikaWindow NikaEngine::InitWindow(std::string title, UINT32 x, UINT32 y, UINT32 width, UINT32 height, bool border, COLORREF bgColor){
+NikaWindow NikaEngine::InitWindow(std::string title, UINT32 x, UINT32 y, UINT32 width, UINT32 height, bool border){
 	// register main window's class
 	static WNDCLASSEXA wc = { 0 };
 	wc.cbSize = sizeof(WNDCLASSEXA);
 	wc.lpszClassName = "CLASS_NIKA";
 	wc.lpfnWndProc = WndProc;
-	wc.hbrBackground = CreateSolidBrush(bgColor);
+	wc.hbrBackground = NULL;
 	RegisterClassExA(&wc);
 
 	// check if window has border

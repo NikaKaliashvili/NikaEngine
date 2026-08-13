@@ -20,10 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CPP\main.cpp" />
+    <ClCompile Include="CPP\src\graphics\create_object.cpp" />
     <ClCompile Include="CPP\src\math\vec2.cpp" />
     <ClCompile Include="CPP\src\window\nika_window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CPP\include\graphics\create_object.h" />
     <ClInclude Include="CPP\include\math\vec2.h" />
     <ClInclude Include="CPP\include\nika_engine.h" />
     <ClInclude Include="CPP\include\window\nika_window.h" />
@@ -112,6 +114,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -126,6 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
