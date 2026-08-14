@@ -22,12 +22,14 @@
     <ClCompile Include="CPP\main.cpp" />
     <ClCompile Include="CPP\src\graphics\create_object.cpp" />
     <ClCompile Include="CPP\src\math\vec2.cpp" />
+    <ClCompile Include="CPP\src\physics\physics.cpp" />
     <ClCompile Include="CPP\src\window\nika_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPP\include\graphics\create_object.h" />
     <ClInclude Include="CPP\include\math\vec2.h" />
     <ClInclude Include="CPP\include\nika_engine.h" />
+    <ClInclude Include="CPP\include\physics\physics.h" />
     <ClInclude Include="CPP\include\window\nika_window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
