@@ -6,6 +6,23 @@ static callBack onUpdate;
 
 static HWND _hwnd;
 
+static void UpdateWindowBitmap(HWND hwnd) {
+	GetClientRect(hwnd, &windowSize);
+
+	if (hbMap != NULL) {
+		SelectObject(hdcMem, hOldBMap);
+		DeleteObject(hbMap);
+		hbMap = NULL;
+	}
+
+	hbMap = CreateCompatibleBitmap(hdc, windowSize.right, windowSize.bottom);
+
+	HBITMAP hTemp = (HBITMAP)SelectObject(hdcMem, hbMap);
+	if (hOldBMap == NULL) {
+		hOldBMap = hTemp;
+	}
+}
+
 // this is called before actual onUpdate
 static void onUpdateFunc(void*) {
 	while (1) {
@@ -19,11 +36,9 @@ static void onUpdateFunc(void*) {
 static void onStartFunc(HWND hwnd) {
 	hdc = GetDC(hwnd);
 	hdcMem = CreateCompatibleDC(hdc);
-	HBITMAP hbMap = CreateCompatibleBitmap(hdc,600,600);
-	_hwnd = hwnd;
+	UpdateWindowBitmap(hwnd);
 
-	// set bitmap for hdcMem
-	SelectObject(hdcMem, hbMap);
+	_hwnd = hwnd;
 	onStart();
 
 	// onUpdate thread
@@ -45,6 +60,10 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		PostQuitMessage(0);
 		break;
 
+	case WM_SIZE:
+		UpdateWindowBitmap(hwnd);
+		break;
+
 	case WM_CREATE:
 		// call onStart function if is called
 		if (onStart)
@@ -56,13 +75,15 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hwnd,&ps);
 
-		BitBlt(hdc, 0, 0, 600, 600, hdcMem, 0, 0, SRCCOPY);
+		BitBlt(hdc, 0, 0, windowSize.right, windowSize.bottom, hdcMem, 0, 0, SRCCOPY);
 
 		EndPaint(hwnd, &ps);
 
 		return 1;
 
 	}
+
+
 
 	return DefWindowProcA(hwnd, msg, wParam, lParam);
 
@@ -76,6 +97,7 @@ NikaWindow NikaEngine::InitWindow(std::string title, UINT32 x, UINT32 y, UINT32 
 	wc.lpszClassName = "CLASS_NIKA";
 	wc.lpfnWndProc = WndProc;
 	wc.hbrBackground = NULL;
+
 	RegisterClassExA(&wc);
 
 	// check if window has border

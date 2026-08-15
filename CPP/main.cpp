@@ -1,90 +1,96 @@
 #include <iostream>
 #include "include/nika_engine.h"
 
+using namespace NikaEngine;
+
 float gravity = 10;
 float moveSpeed = 7;
 float jumpPower = -20;
-Vec2 blockPos(250, 50);
-Vec2 blockSz(100, 100);
-Vec2 groundPos(-1,450);
-Vec2 groundSz(600,150);
-COLORREF playerColor;
+
+NikaObject player = {RGB(255,255,255), Vec2(250,50), Vec2(100,100)};
+NikaObject ground = {RGB(50, 255, 50), Vec2(-1,450), Vec2(800,150)};
+NikaObject enemy = {RGB(255, 50, 50), Vec2(500,400), Vec2(50,50)};
 
 // runs when window is created
-void start() {
+static void start() {
 	std::cout << "Game has started!" << std::endl;
-	
-	playerColor = RGB(255,255,255);
 }
 
-void handleGravity() {
+static void handleGravity() {
 	// handle gravity
-	if (!NikaEngine::CheckCollision(blockPos, blockSz, groundPos, groundSz)) {
+	if (!CheckCollision_N(player, ground)) {
 		gravity += 1;
 	}
 	else {
 		gravity = 0;
 
-		if (blockPos.y + blockSz.y > groundPos.y) {
-			blockPos.y = groundPos.y - blockSz.y;
+		if (player.pos.y + player.sz.y > ground.pos.y) {
+			player.pos.y = ground.pos.y - player.sz.y;
 		}
 	}
 
-	blockPos.y += gravity;
+	player.pos.y += gravity;
 }
 
-void handleMovement() {
+static void handleMovement() {
 	// jump if space
 	if (GetAsyncKeyState(VK_SPACE)) {
 
-		if (NikaEngine::CheckCollision(blockPos, blockSz, groundPos, groundSz)) {
-			blockPos.y -= 2;
+		if (CheckCollision(player.pos, player.sz, ground.pos, ground.sz)) {
+			player.pos.y -= 2;
 			gravity = jumpPower;
 		}
 	}
 
 	if (GetAsyncKeyState('A')) {
-		blockPos.x -= moveSpeed;
+		player.pos.x -= moveSpeed;
 	}
 	if (GetAsyncKeyState('D')) {
-		blockPos.x += moveSpeed;
+		player.pos.x += moveSpeed;
 	}
 }
 
 // runs 120 fps
-void update() {
+static void update() {
 	// set background color to purple
-	NikaEngine::SetBgColor(RGB(100, 100, 255));
+	SetBgColor(RGB(100, 100, 255));
 
 	// draw ground
-	NikaEngine::DrawBlock(RGB(50, 255, 50), groundPos, groundSz);
+	DrawBlock(ground.bodyColor, ground.pos, ground.sz);
 
 	// draw player
-	NikaEngine::DrawBlock(playerColor,blockPos, blockSz);
+	DrawBlock(player.bodyColor,player.pos, player.sz);
+
+	// draw enemy
+	DrawBlock(enemy.bodyColor, enemy.pos, enemy.sz);
+
+	// draw circle
+	DrawEllipse(RGB(155,25,200), Vec2(50,150), Vec2(100,100));
+
+	// draw triangle
+	DrawTriangle(RGB(255,255,0), Vec2(50,50), Vec2(100,100));
 
 	handleGravity(); 
 	handleMovement();
-	
-	// change player colors
-	if (GetAsyncKeyState('Q')) {
-		playerColor = RGB(0,0,255);
-	}
 
-	if (GetAsyncKeyState('E')) {
-		playerColor = RGB(255, 0, 0);
+	// check collision with enemy
+
+	if (CheckCollision_N(player, enemy)) {
+		player.pos = Vec2(250,50);
+		std::cout << "You died!" << std::endl;
 	}
 }
 
 int main() {
 
 	// runs 'start' void when window is created
-	NikaEngine::OnStart(start);
+	OnStart(start);
 
 	// runs 'update' void on paint
-	NikaEngine::OnUpdate(update);
+	OnUpdate(update);
 
 	// initialize window
-	NikaWindow Game = NikaEngine::InitWindow("Game test", 100,100,600,600,true);
+	NikaWindow Game = InitWindow("Game test", 100,100,600,600,true);
 
 	// testing vectors
 	Vec2 a(5, 5);
@@ -92,7 +98,7 @@ int main() {
 	Vec2 c = a + b;
 
 	// handle window events
-	NikaEngine::PollEvents();
+	PollEvents();
 
 	return 0;
 }

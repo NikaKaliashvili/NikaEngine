@@ -47,5 +47,8 @@
     <ClInclude Include="CPP\include\physics\physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CPP\include\structs\nika_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

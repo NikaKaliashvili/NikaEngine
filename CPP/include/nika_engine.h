@@ -8,8 +8,12 @@
 using callBack = void(*)();
 inline extern HDC hdc = nullptr;
 inline extern HDC hdcMem = nullptr;
+inline extern HBITMAP hbMap = nullptr;
+inline extern HBITMAP hOldBMap = nullptr;
+inline extern RECT windowSize = RECT{0};
 
 #include "math/vec2.h"
+#include "structs/nika_object.h"
 #include "window/nika_window.h"
 #include "graphics/create_object.h"
 #include "physics/physics.h"

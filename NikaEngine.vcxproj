@@ -30,6 +30,7 @@
     <ClInclude Include="CPP\include\math\vec2.h" />
     <ClInclude Include="CPP\include\nika_engine.h" />
     <ClInclude Include="CPP\include\physics\physics.h" />
+    <ClInclude Include="CPP\include\structs\nika_object.h" />
     <ClInclude Include="CPP\include\window\nika_window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
