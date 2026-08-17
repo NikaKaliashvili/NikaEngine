@@ -8,15 +8,10 @@ static POINT cursorPos;
 static void update() {
 	// set background color to purple
 	SetBgColor(RGB(100, 100, 255));
-
 	GetCursorPos(cursorPos);
-
-	std::cout << "X: " << cursorPos.x << std::endl;
-	std::cout << "Y: " << cursorPos.y << std::endl;
 }
 
 int main() {
-
 	// runs 'start' void when window is created
 	//OnStart(start);
 

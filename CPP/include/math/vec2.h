@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../nika_engine.h"
+
+
 class Vec2 {
 public:
 	float x;
@@ -15,6 +18,18 @@ public:
 	Vec2 operator- (Vec2& other);
 	Vec2 operator* (Vec2& other);
 	Vec2 operator/ (Vec2& other);
+
+	template <typename T>
+	Vec2 operator+ (const T& other) const;
+
+	template <typename T>
+	Vec2 operator- (const T& other) const;
+
+	template <typename T>
+	Vec2 operator* (const T& other) const;
+
+	template <typename T>
+	Vec2 operator/ (const T& other) const;
 
 	Vec2 operator+= (Vec2& other);
 	Vec2 operator-= (Vec2& other);

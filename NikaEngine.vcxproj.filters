@@ -30,6 +30,9 @@
     <ClCompile Include="CPP\src\physics\physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CPP\src\math\vec3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPP\include\window\nika_window.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CPP\include\structs\nika_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CPP\include\math\vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
