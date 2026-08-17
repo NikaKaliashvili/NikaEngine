@@ -2,11 +2,14 @@
 
 class Vec2 {
 public:
-	int x;
-	int y;
+	float x;
+	float y;
 
 	Vec2();
-	Vec2(int x, int y);
+	Vec2(float x, float y);
+
+	float magnitude();
+	Vec2 normalize();
 
 	Vec2 operator+ (Vec2& other);
 	Vec2 operator- (Vec2& other);
@@ -17,4 +20,9 @@ public:
 	Vec2 operator-= (Vec2& other);
 	Vec2 operator*= (Vec2& other);
 	Vec2 operator/= (Vec2& other);
+
+	bool operator== (const Vec2& other) const;
+	bool operator!= (const Vec2& other) const;
+
+	friend std::ostream& operator<< (std::ostream& os, const Vec2& vec);
 };

@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 #include <string>
+#include <iostream>
+#include <cmath>
 #include <process.h>
 
 #define NikaWindow HWND

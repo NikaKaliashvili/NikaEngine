@@ -3,7 +3,6 @@
 
 static callBack onStart;
 static callBack onUpdate;
-
 static HWND _hwnd;
 
 static void UpdateWindowBitmap(HWND hwnd) {
@@ -32,20 +31,7 @@ static void onUpdateFunc(void*) {
 	}
 }
 
-// this is called before actual onUpdate
-static void onStartFunc(HWND hwnd) {
-	hdc = GetDC(hwnd);
-	hdcMem = CreateCompatibleDC(hdc);
-	UpdateWindowBitmap(hwnd);
-
-	_hwnd = hwnd;
-	onStart();
-
-	// onUpdate thread
-	if (onUpdate)
-		_beginthread(onUpdateFunc, 0, 0);
-}
-
+static POINT cursorPos;
 
 // main window procedure
 static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -64,14 +50,28 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		UpdateWindowBitmap(hwnd);
 		break;
 
+	case WM_MOUSEMOVE:
+		cursorPos.x = LOWORD(lParam);
+		cursorPos.y = HIWORD(lParam);
+		break;
+
 	case WM_CREATE:
+		// initialize globals
+		hdc = GetDC(hwnd);
+		hdcMem = CreateCompatibleDC(hdc);
+		_hwnd = hwnd;
+		UpdateWindowBitmap(hwnd);
+
 		// call onStart function if is called
 		if (onStart)
-			onStartFunc(hwnd);
+			onStart();
+
+		// onUpdate thread
+		if (onUpdate)
+			_beginthread(onUpdateFunc, 0, 0);
 		break;
 
 	case WM_PAINT:
-
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint(hwnd,&ps);
 
@@ -80,9 +80,7 @@ static LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		EndPaint(hwnd, &ps);
 
 		return 1;
-
 	}
-
 
 
 	return DefWindowProcA(hwnd, msg, wParam, lParam);
@@ -128,4 +126,10 @@ void NikaEngine::OnStart(callBack startCallBack)
 // sets which void should run for painting
 void NikaEngine::OnUpdate(callBack updateCallBack) {
 	onUpdate = updateCallBack;
+}
+
+// sets cursor pos to passed point
+void NikaEngine::GetCursorPos(POINT& point)
+{
+	point = cursorPos;
 }

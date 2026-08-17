@@ -24,4 +24,7 @@ namespace NikaEngine {
 	NOTE: this must be called BEFORE InitWindow function.
 	*/
 	void OnUpdate(callBack updateCallBack);
+
+	// retrieves cursor position
+	void GetCursorPos(POINT& point);
 }
