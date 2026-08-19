@@ -5,9 +5,11 @@
 #include <iostream>
 #include <cmath>
 #include <process.h>
+#include <chrono>
 
 #define NikaWindow HWND
 using callBack = void(*)();
+inline extern HWND _hwnd = nullptr;
 inline extern HDC hdc = nullptr;
 inline extern HDC hdcMem = nullptr;
 inline extern HBITMAP hbMap = nullptr;

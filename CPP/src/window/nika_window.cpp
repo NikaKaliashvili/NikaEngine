@@ -3,7 +3,6 @@
 
 static callBack onStart;
 static callBack onUpdate;
-static HWND _hwnd;
 
 static void UpdateWindowBitmap(HWND hwnd) {
 	GetClientRect(hwnd, &windowSize);

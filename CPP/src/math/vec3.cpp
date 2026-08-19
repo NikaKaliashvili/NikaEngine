@@ -28,22 +28,40 @@ Vec3 Vec3::normalize()
 	return Vec3(this->x / magnitude, this->y / magnitude, this->z);
 }
 
-Vec3 Vec3::operator+(Vec3& other)
+float Vec3::dot(const Vec3& b) const
+{
+	return (
+		(this->x * b.x)+
+		(this->y * b.y)+
+		(this->z * b.z)
+	);
+}
+
+Vec3 Vec3::cross(const Vec3& b) const
+{
+	return Vec3(
+		(this->y * b.z - this->z * b.y),
+		(this->z*b.x - this->x*b.z),
+		(this->x*b.y - this->y*b.x)
+	);
+}
+
+Vec3 Vec3::operator+(const Vec3& other) const
 {
 	return Vec3(x + other.x, y + other.y, z + other.z);
 }
 
-Vec3 Vec3::operator-(Vec3& other)
+Vec3 Vec3::operator-(const Vec3& other) const
 {
 	return Vec3(x - other.x, y - other.y, z - other.z);
 }
 
-Vec3 Vec3::operator*(Vec3& other)
+Vec3 Vec3::operator*(const Vec3& other) const
 {
 	return Vec3(x * other.x, y * other.y, z * other.z);
 }
 
-Vec3 Vec3::operator/(Vec3& other)
+Vec3 Vec3::operator/(const Vec3& other) const
 {
 	return Vec3(x / other.x, y / other.y, z / other.z);
 }

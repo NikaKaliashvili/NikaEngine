@@ -14,10 +14,10 @@ public:
 	float magnitude();
 	Vec2 normalize();
 
-	Vec2 operator+ (Vec2& other);
-	Vec2 operator- (Vec2& other);
-	Vec2 operator* (Vec2& other);
-	Vec2 operator/ (Vec2& other);
+	Vec2 operator+ (const Vec2& other) const;
+	Vec2 operator- (const Vec2& other) const;
+	Vec2 operator* (const Vec2& other) const;
+	Vec2 operator/ (const Vec2& other) const;
 
 	template <typename T>
 	Vec2 operator+ (const T& other) const;

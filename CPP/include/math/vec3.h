@@ -12,12 +12,14 @@ public:
 	Vec3(float x, float y, float z);
 
 	float magnitude();
+	float dot(const Vec3& b) const;
 	Vec3 normalize();
+	Vec3 cross(const Vec3& b) const;
 
-	Vec3 operator+ (Vec3& other);
-	Vec3 operator- (Vec3& other);
-	Vec3 operator* (Vec3& other);
-	Vec3 operator/ (Vec3& other);
+	Vec3 operator+ (const Vec3& other) const;
+	Vec3 operator- (const Vec3& other) const;
+	Vec3 operator* (const Vec3& other) const;
+	Vec3 operator/ (const Vec3& other) const;
 
 
 	template <typename T>
