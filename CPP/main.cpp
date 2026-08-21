@@ -13,8 +13,20 @@ Vec3 worldUp = {0,1,0}, cameraPosition, cameraForward, cameraRight, cameraUp;
 float yaw, pitch, yawRad, pitchRad;
 float moveSpeed = 3, sensitivity = 0.1f;
 float deltaTime;
+bool lockCursor = false;
+
+Mat4 viewMatrix;
 
 std::chrono::steady_clock::time_point previousTime, currentTime;
+
+Vec3 PerspectiveProject(const Vec3& point)
+{
+	return Vec3(
+		point.x / point.z,
+		point.y / point.z,
+		point.z
+	);
+}
 
 static void start() {
 	previousTime = std::chrono::steady_clock::now(); // reset previousTime
@@ -22,7 +34,63 @@ static void start() {
 	NikaEngine::GetCursorPos(previousCursorPos); // get cursor starting position
 }
 
-bool lockCursor = false;
+
+Mat4 CreateViewMatrix(
+	const Vec3& cameraPosition,
+	const Vec3& cameraRight,
+	const Vec3& cameraUp,
+	const Vec3& cameraForward)
+{
+	Mat4 result{};
+
+	// Camera right
+	result.m[0][0] = cameraRight.x;
+	result.m[0][1] = cameraRight.y;
+	result.m[0][2] = cameraRight.z;
+
+	// Camera up
+	result.m[1][0] = cameraUp.x;
+	result.m[1][1] = cameraUp.y;
+	result.m[1][2] = cameraUp.z;
+
+	// Camera forward
+	result.m[2][0] = cameraForward.x;
+	result.m[2][1] = cameraForward.y;
+	result.m[2][2] = cameraForward.z;
+
+	// Camera position
+	result.m[0][3] = -cameraPosition.dot(cameraRight);
+	result.m[1][3] = -cameraPosition.dot(cameraUp);
+	result.m[2][3] = -cameraPosition.dot(cameraForward);
+
+	// Homogeneous coordinate
+	result.m[3][3] = 1.0f;
+
+	return result;
+}
+
+Vec3 TransformPoint(const Mat4& matrix, const Vec3& point)
+{
+	float x =
+		matrix.m[0][0] * point.x +
+		matrix.m[0][1] * point.y +
+		matrix.m[0][2] * point.z +
+		matrix.m[0][3];
+
+	float y =
+		matrix.m[1][0] * point.x +
+		matrix.m[1][1] * point.y +
+		matrix.m[1][2] * point.z +
+		matrix.m[1][3];
+
+	float z =
+		matrix.m[2][0] * point.x +
+		matrix.m[2][1] * point.y +
+		matrix.m[2][2] * point.z +
+		matrix.m[2][3];
+
+	return Vec3(x, y, z);
+}
 
 // runs 120 fps
 static void update() {
@@ -63,7 +131,6 @@ static void update() {
 
 	if (pitch < -89.0f)
 		pitch = -89.0f;
-
 
 	// turn degree to radians
 	yawRad = yaw * nika_pi / 180;
@@ -114,7 +181,19 @@ static void update() {
 	// change player position
 	playerPos = playerPos + movement * moveSpeed * deltaTime;
 
-	std::cout << cameraRight << std::endl;
+	Vec3 objectPosition(4,2,10);
+
+	viewMatrix = CreateViewMatrix(
+		cameraPosition,
+		cameraRight,
+		cameraUp,
+		cameraForward
+	);
+
+	Vec3 result =
+		TransformPoint(viewMatrix, objectPosition);
+
+	std::cout << result << std::endl;
 
 	// NOTE: temporary to see logs
 	Sleep(400);

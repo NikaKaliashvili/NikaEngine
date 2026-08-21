@@ -18,6 +18,7 @@ inline extern RECT windowSize = RECT{0};
 
 #include "math/vec2.h"
 #include "math/vec3.h"
+#include "math/mat4.h"
 #include "structs/nika_object.h"
 #include "window/nika_window.h"
 #include "graphics/create_object.h"
